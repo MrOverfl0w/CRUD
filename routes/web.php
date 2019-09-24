@@ -14,3 +14,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('showImage', 'UserController@showImage')->name('users.showImage');
+Route::resource('users', 'UserController');
