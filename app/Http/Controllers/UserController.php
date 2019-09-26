@@ -46,9 +46,11 @@ class UserController extends Controller
         ]);
 
         //Se obtiene la imagen, y se guarda la ruta en la base de datos
-        $img = $request->file('imagen');
         $username = $request->get('username');
-        $path = $this->upload($img,$username);
+        $path = "";
+        if ($request->hasFile('imagen')){
+            $path = $this->upload($request->file('imagen'),$username);
+        }
 
         $user = new User([
             'nombre' => $request->get('nombre'),
@@ -72,7 +74,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::find($id);
+        return view('users.show', compact('user'));
     }
 
     /**
@@ -139,7 +142,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $user->delete();
-        $this->deleteUserFile($user);
+        $this->deleteUserFile($user->username);
         return redirect('/users')->with('success', 'Usuario borrado!');
     }
 
@@ -154,8 +157,8 @@ class UserController extends Controller
         $storage_path = \storage_path().'/app/';
         $path_to_image = $request->get('imagen');
         $url = $storage_path . $path_to_image;
-        return response()->file($url);
         if (\Storage::exists($path_to_image)){
+            return response()->file($url);
         }
         return response()->file($storage_path . 'blank-profile.png');
     }
@@ -168,6 +171,10 @@ class UserController extends Controller
     }
 
     private function deleteUserFile($username){
-        \Storage::deleteDirectory($username);
+        try{
+            \Storage::deleteDirectory($username);
+        }catch(Exception $ex){
+            echo 'La carpeta no existe';
+        }
     }
 }

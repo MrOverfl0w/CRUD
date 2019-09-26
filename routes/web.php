@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/users');
 });
 
 Route::get('showImage', 'UserController@showImage')->name('users.showImage');

@@ -10,16 +10,14 @@
         @endif
     </div>
     <div class="col-sm-12">
-        <h1 class="display-3">Usuarios</h1>    
+        <h1 class="display-4">Usuarios</h1>    
         <div>
-            <a style="margin: 19px;" href="{{ route('users.create')}}" class="btn btn-primary">New user</a>
+            <a style="margin: 19px;" href="{{ route('users.create')}}" class="btn btn-secondary">New user</a>
         </div>
-        <table class="table table-striped">
+        <table class="table table-responsive">
             <thead>
                 <tr>
-                    <td>ID</td>
                     <td>Foto de perfil</td>
-                    <td>Nombre completo</td>
                     <td>Email</td>
                     <td>Nombre de Usuario</td>
                     <td colspan = 2>Actions</td>
@@ -28,19 +26,17 @@
             <tbody>
                 @foreach($users as $user)
                 <tr>
-                    <td>{{$user->id}}</td>
-                    <td><img src="{{ route('users.showImage','imagen='.$user->imagen)}}" class="card-img"></td>
-                    <td>{{$user->nombre}} {{$user->apellido}}</td>
-                    <td>{{$user->email}}</td>
-                    <td>{{$user->username}}</td>
+                    <td><a href="{{ route("users.show", $user->id)}}"><img src="{{ route('users.showImage','imagen='.$user->imagen)}}" class="card-img"></a></td>
+                    <td><a href="{{ route("users.show", $user->id)}}">{{$user->email}}</td></a>
+                    <td><a href="{{ route("users.show", $user->id)}}">{{$user->username}}</td></a>
                     <td>
-                        <a href="{{ route('users.edit',$user->id)}}" class="btn btn-primary">Edit</a>
+                        <a href="{{ route('users.edit',$user->id)}}" class="btn btn-primary">Editar</a>
                     </td>
                     <td>
                         <form action="{{ route('users.destroy', $user->id)}}" method="post">
                             @csrf
                             @method('DELETE')
-                            <button class="btn btn-danger" type="submit">Delete</button>
+                            <button class="btn btn-danger" type="submit">Eliminar</button>
                         </form>
                     </td>
                 </tr>
